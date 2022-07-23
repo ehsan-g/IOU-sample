@@ -3,39 +3,10 @@ pragma solidity ^0.8.9;
 
 import "./Proxiable.sol";
 
-contract IOU is Proxiable {
-    address _owner;
-    address _operator;
-    uint256 _price;
+// 1- Negar, wants to receive service from Ashkan with her ERC20 tokens.
+// 2- Negar negotiates the price and send them to Ashkan and receve service.
+// 3- Ashakn can go back to Negar now and burn some tokens anf leave feedbak!.
 
-    function constructor1() public {
-        require(_owner == address(0), "You can't initialize again");
-        _owner = msg.sender;
-    }
+contract IOU {
 
-    modifier onlyOwner() {
-        require(msg.sender == _owner, "Only owner is allowed!");
-        _;
-    }
-
-    modifier onlyOperator() {
-        require(msg.sender == _operator, "Only operator is allowed!");
-        _;
-    }
-
-    function operator() public view returns (address) {
-        return _operator;
-    }
-
-    function owner() public view returns (address) {
-        return _owner;
-    }
-
-    function setOperator(address newOperator) public onlyOwner {
-        _operator = newOperator;
-    }
-
-    function updateCode(address newCode) public onlyOwner {
-        updateCodeAddress(newCode);
-    }
 }
