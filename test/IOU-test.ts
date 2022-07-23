@@ -1,32 +1,28 @@
-// import { upgrades, ethers } from "hardhat";
-// import { expect } from "chai";
-// import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
-// import Voucher from "../scripts/Voucher";
-
 import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
 import { expect } from "chai";
 import { ethers } from "hardhat";
 
 describe("IOU", function () {
-  async function deployLockFixture() {
+  async function deployFixture() {
     const [owner] = await ethers.getSigners();
     const IOU = await ethers.getContractFactory("IOU");
     const iou = await IOU.deploy();
 
     const ProxyIOU = await ethers.getContractFactory("ProxyIOU");
-    const iouProxy = await ProxyIOU.deploy(0x473be604, iou.address);
+    const proxyIOU = await ProxyIOU.deploy(0x473be604, iou.address);
 
     return {
       owner,
       IOU,
       iou,
-      iouProxy,
+      proxyIOU,
     };
   }
   it("deployment - owner is set once", async () => {
-    const { owner, IOU, iouProxy } = await loadFixture(deployLockFixture);
+    const { owner, IOU, proxyIOU } = await loadFixture(deployFixture);
 
-    const proxy = IOU.attach(iouProxy.address);
+    const proxy = IOU.attach(proxyIOU.address);
+
     const proxyOwner = await proxy.owner();
 
     await expect(proxy.constructor1()).to.be.revertedWith(
