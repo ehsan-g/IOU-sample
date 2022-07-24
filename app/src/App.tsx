@@ -1,54 +1,60 @@
-import React from 'react';
-import { Counter } from './features/counter/Counter';
+import React from "react";
+import { Grid } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import Accordions from "./components/Accordion";
+import { useAppDispatch, useAppSelector } from "./app/hooks";
+import { connectWallet } from "./features/wallet/walletAction";
+import { connect, deploy } from "./features/wallet/walletSlice";
 
 function App() {
+  const dispatch = useAppDispatch();
+
+  const { status, contract } = useAppSelector((state) => state.wallet);
+
+  const handleClick = () => {
+    dispatch(connect());
+  };
+
+  const handleDeploy = async () => {
+    dispatch(deploy());
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
+    <Grid container>
+      <Grid
+        container
+        direction="row"
+        justifyContent="space-between"
+        alignItems="flex-start"
+      >
+        <Grid item xs={6} sx={{ marginBottom: 10 }}>
+          {!contract && (
+            <LoadingButton
+              loading={status === "loading"}
+              onClick={handleDeploy}
+              variant="outlined"
+            >
+              Deploy IOU Maker
+            </LoadingButton>
+          )}
+        </Grid>
+        <Grid item xs={6} sx={{ textAlign: "right", marginBottom: 10 }}>
+          {contract && (
+            <LoadingButton
+              loading={status === "loading"}
+              onClick={handleClick}
+              variant="outlined"
+            >
+              Connect Wallet - {status}
+            </LoadingButton>
+          )}
+        </Grid>
+      </Grid>
+
+      <Grid item xs={12}>
+        <Accordions />
+      </Grid>
+    </Grid>
   );
 }
 
