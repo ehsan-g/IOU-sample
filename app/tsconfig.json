@@ -22,5 +22,5 @@
   },
   "include": [
     "src"
-, "src/types/index.d.ts.ts"  ]
+, "src/types/index.d.ts.ts", "../deploy"  ]
 }

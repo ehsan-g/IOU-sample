@@ -9,6 +9,16 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 
+struct Voucher {
+    string tokenUri;
+    string content;
+    bytes signature;
+}
+
+interface InterfaceVoucher {
+    function _verify(Voucher calldata voucher) external view returns (address);
+}
+
 // 1- Negar, wants to receive service from Ashkan with her ERC20 tokens.
 // 2- Negar negotiates the price and send them to Ashkan and receve service.
 // 3- Ashakn can go back to Negar now and burn some tokens anf leave feedbak!.
@@ -29,15 +39,27 @@ contract TheToken is
         _disableInitializers();
     }
 
-    function initialize() public initializer {
+    address public voucherAddress;
+
+    function initialize(address voucherContract) public initializer {
         __ERC721_init("TheToken", "IOU");
         __ERC721URIStorage_init();
         __ERC721Burnable_init();
         __Ownable_init();
         __UUPSUpgradeable_init();
+        voucherAddress = voucherContract;
     }
 
-    function _safeMint(address to, string memory uri) external onlyOwner returns(uint256){
+    function _safeMint(
+        address to,
+        string memory uri,
+        Voucher calldata _voucher
+    ) external onlyOwner returns (uint256) {
+        InterfaceVoucher voucherInterface = InterfaceVoucher(voucherAddress);
+        address signerAddress = voucherInterface._verify(_voucher);
+
+        require(signerAddress == _msgSender(), "Not your signature!");
+
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);

@@ -1,10 +1,14 @@
-import { HardhatUserConfig } from "hardhat/config";
+import "@typechain/hardhat";
 import "@nomicfoundation/hardhat-chai-matchers";
 import "@nomiclabs/hardhat-etherscan";
 import "@nomiclabs/hardhat-ethers";
 import "hardhat-gas-reporter";
 import "hardhat-deploy";
+import "@openzeppelin/hardhat-upgrades";
+
 import "dotenv/config";
+
+import { HardhatUserConfig } from "hardhat/config";
 
 const COINMARKETCAP_API_KEY = process.env.COINMARKETCAP_API_KEY || "";
 const RINKEBY_RPC_URL = process.env.RINKEBY_RPC_URL || "";
