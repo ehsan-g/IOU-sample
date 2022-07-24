@@ -1,7 +1,7 @@
 import { TransactionReceipt } from "@ethersproject/providers";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { ethers } from "ethers";
-import IOU from "../../build/artifacts/contracts/IOU.sol/IOU.json";
+import IOU from "../../build/contracts/IOU.sol/IOU.json";
 
 export interface balanceState {
   balance?: number;
