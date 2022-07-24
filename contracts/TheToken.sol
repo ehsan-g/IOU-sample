@@ -8,13 +8,12 @@ import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
-import "./Proxiable.sol";
 
 // 1- Negar, wants to receive service from Ashkan with her ERC20 tokens.
 // 2- Negar negotiates the price and send them to Ashkan and receve service.
 // 3- Ashakn can go back to Negar now and burn some tokens anf leave feedbak!.
 
-contract IOU is
+contract TheToken is
     Initializable,
     ERC721Upgradeable,
     ERC721URIStorageUpgradeable,
@@ -31,18 +30,19 @@ contract IOU is
     }
 
     function initialize() public initializer {
-        __ERC721_init("MyToken", "IOU");
+        __ERC721_init("TheToken", "IOU");
         __ERC721URIStorage_init();
         __ERC721Burnable_init();
         __Ownable_init();
         __UUPSUpgradeable_init();
     }
 
-    function _safeMint(address to, string memory uri) internal onlyOwner {
+    function _safeMint(address to, string memory uri) external onlyOwner returns(uint256){
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
+        return tokenId;
     }
 
     function _authorizeUpgrade(address newImplementation)
