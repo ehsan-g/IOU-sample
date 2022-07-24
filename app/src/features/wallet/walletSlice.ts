@@ -1,4 +1,3 @@
-import { TransactionReceipt } from "@ethersproject/providers";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { connectWallet, deployIOU, signAndCreate } from "./walletAction";
 

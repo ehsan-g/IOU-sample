@@ -1,5 +1,5 @@
-import { Contract, ethers } from "ethers";
-import IOU from "../../build/artifacts/contracts/IOU.sol/IOU.json";
+import { ethers } from "ethers";
+import IOU from "../../contracts/IOU.sol/IOU.json";
 
 export const connectWallet = async () => {
   window.ethereum.request({ method: "eth_requestAccounts" });

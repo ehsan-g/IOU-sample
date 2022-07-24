@@ -3,7 +3,6 @@ import { Grid } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import Accordions from "./components/Accordion";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
-import { connectWallet } from "./features/wallet/walletAction";
 import { connect, deploy } from "./features/wallet/walletSlice";
 
 function App() {
